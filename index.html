@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Translation-like with GPT-3</title>
+</head>
+<body>
+    <h1>Translation-like with GPT-3</h1>
+    <textarea id="sourceText" placeholder="Enter text to translate"></textarea>
+    <button id="translateBtn">Translate</button>
+    <div id="translatedText"></div>
+
+    <script>
+        const translateBtn = document.getElementById('translateBtn');
+        const sourceText = document.getElementById('sourceText');
+        const translatedText = document.getElementById('translatedText');
+        const apiKey = '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'; // Replace with your API key
+
+        translateBtn.addEventListener('click', () => {
+            const textToTranslate = sourceText.value;
+
+            if (textToTranslate) {
+                translateWithGPT3(textToTranslate);
+            }
+        });
+
+        function translateWithGPT3(text) {
+            const apiUrl = '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';
+            const requestData = {
+                prompt: `Translate the following English text to French: "${text}"`,
+                max_tokens: 100,
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${'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'}`,
+                },
+                body: JSON.stringify(requestData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const translation = data.choices[0].text.trim();
+                translatedText.textContent = translation;
+            })
+            .catch(error => {
+                console.error('Translation error:', error);
+                translatedText.textContent = 'Translation error occurred.';
+            });
+        }
+    </script>
+</body>
+</html>
